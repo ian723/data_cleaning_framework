@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline  # (Not used in current code, but can be used for chaining steps)
+#from sklearn.pipeline import Pipeline  # (This is used for chaining steps)
 from loguru import logger  # For logging information, warnings, and errors
 from .utils import memory_optimize  # Utility function to optimize DataFrame memory usage
 

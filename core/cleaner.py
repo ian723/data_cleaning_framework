@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import dask.dataframe as dd
-from dask.diagnostics import ProgressBar
+# from dask.diagnostics import ProgressBar # (This is used for progress bars)
 from loguru import logger
 from pathlib import Path
 from sklearn.impute import KNNImputer

@@ -13,3 +13,11 @@ A scalable, production-ready data cleaning pipeline for handling large datasets.
 ```bash
 git clone https://github.com/ian723/data_cleaning_framework.git
 pip install -r requirements.txt
+
+
+## Running Tests
+
+Make sure your virtual environment is activated, then run:
+
+```bash
+pytest

@@ -12,8 +12,8 @@ validation_rules:
       max: 65
     salary:
       min: 30000
-  regex_patterns:
-    email: "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+regex_patterns:
+  email: "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
 
 date_columns:
   - hire_date

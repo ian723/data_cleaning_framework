@@ -52,7 +52,8 @@ You can run the data cleaning pipeline using the CLI. For example, to process a 
 python main.py data/raw/mydata.csv -o data/processed/ --dask --profile
 
 CLI Options
-input: Path to an input file or directory.
+input: Path to an input fil
+e or directory.
 -o/--output: Directory to save cleaned data (default is defined in settings).
 -c/--config: Path to the YAML configuration file (default: config/cleaning_rules.yaml).
 --dask: Enable parallel processing using Dask.

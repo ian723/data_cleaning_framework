@@ -5,7 +5,7 @@ import pandas as pd  # For DataFrame operations
 import ydata_profiling  # For generating data profile reports
 from core.cleaner import DataCleaner  # Custom class for data cleaning
 from core.preprocessor import DataPreprocessor  # Custom class for data preprocessing
-from config import settings  # Project-specific settings and configurations
+from config.settings import settings  # Project-specific settings and configurations
 
 def main():
     # Set up the argument parser with a description and default formatting

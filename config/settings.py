@@ -2,30 +2,31 @@ from pathlib import Path
 from loguru import logger
 
 class Settings:
-    # Directory configurations
-    INPUT_DIR = Path("data/raw")
-    OUTPUT_DIR = Path("data/processed")
-    CACHE_DIR = Path("data/cache")
-    LOG_DIR = Path("logs")
-    
-    # Processing configurations
-    CHUNK_SIZE = 100_000
-    MAX_MEMORY_USAGE = "16GB"
-    FILE_FORMAT = "parquet"  # csv, parquet, feather
-    USE_DASK = True
-    N_WORKERS = 4
-    
-    # Data cleaning configurations
-    MISSING_THRESHOLD = 0.7
-    OUTLIER_METHOD = "iqr"  # zscore, isolation_forest
-    TEXT_CLEANING = True
-    VALIDATE_DATA = True
-    
-    # Logging configuration
-    LOG_LEVEL = "INFO"
-    LOG_RETENTION = "30 days"
-    
     def __init__(self):
+        # Directory configurations as instance attributes
+        self.INPUT_DIR = Path("data/raw")
+        self.OUTPUT_DIR = Path("data/processed")
+        self.CACHE_DIR = Path("data/cache")
+        self.LOG_DIR = Path("logs")
+        
+        # Processing configurations
+        self.CHUNK_SIZE = 100_000
+        self.MAX_MEMORY_USAGE = "16GB"
+        self.FILE_FORMAT = "csv"  # Options: csv, parquet, feather
+        self.USE_DASK = True
+        self.N_WORKERS = 4
+        
+        # Data cleaning configurations
+        self.MISSING_THRESHOLD = 0.7
+        self.OUTLIER_METHOD = "isolation_forest"  # Options: zscore, isolation_forest, iqr
+        self.TEXT_CLEANING = True
+        self.VALIDATE_DATA = True
+        
+        # Logging configuration
+        self.LOG_LEVEL = "INFO"
+        self.LOG_RETENTION = "30 days"
+        
+        # Create required directories and configure logging
         self._create_directories()
         self._configure_logging()
     
@@ -45,4 +46,5 @@ class Settings:
             diagnose=True
         )
 
+# Create an instance of Settings that can be imported
 settings = Settings()

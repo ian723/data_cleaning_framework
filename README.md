@@ -61,4 +61,4 @@ input: Path to an input file or directory.
 
 
 Configuration
-The cleaning rules and processing parameters are defined in the YAML configuration file located at config/cleaning_rules.yaml. Adjust according 
+The cleaning rules and processing parameters are defined in the YAML configuration file located at config/cleaning_rules.yaml.

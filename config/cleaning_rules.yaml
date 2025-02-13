@@ -1,36 +1,35 @@
 missing_values:
-  age: "median"
-  salary: "mean"
-  department: "mode"
-  start_date: "drop_column"
+  title: "drop_row"
+  summary: "drop_row"
+  content: "drop_row"
+  links: "drop_row"
+  url: "drop_row"
 
+# Validation rules to ensure the dataset has all necessary columns.
 validation_rules:
-  required_columns: ["employee_id", "hire_date"]
-  value_ranges:
-    age:
-      min: 18
-      max: 65
-    salary:
-      min: 30000
+  required_columns: ["title", "summary", "content", "links", "url"]
+  # Optionally, you can validate URL formats using a regex.
 regex_patterns:
-  email: "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
+  url: "^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\.-]*)*/?$"
 
-date_columns:
-  - hire_date
-  - termination_date
+# There are no date fields in this dataset.
+date_columns: []
 
+# Specify which columns should undergo text cleaning (e.g., trimming, lowercasing).
 text_columns:
-  - name
-  - address
+  - title
+  - summary
+  - content
+  - links
+  - url
 
+# Outlier handling is generally not applicable for textual data.
 outlier_handling:
-  method: "winsorize"
+  method: "none"
   threshold: 0.05
 
+# Feature engineering: if the dataset doesn't include date or numeric interactions,
+# leave these empty.
 feature_engineering:
-  date_features:
-    - column: hire_date
-      features: ["year", "month", "day_of_week"]
-  interactions:
-    - columns: ["age", "salary"]
-      operation: "multiply"
+  date_features: []
+  interactions: []

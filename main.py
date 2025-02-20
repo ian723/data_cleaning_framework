@@ -1,4 +1,4 @@
-import argparse
+import argparse # for parsing command-line arguments
 from pathlib import Path
 from loguru import logger
 import pandas as pd

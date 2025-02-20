@@ -5,16 +5,16 @@ missing_values:
   links: "drop_row"
   url: "drop_row
 
-# Define the rules for validating the data.
+
 validation_rules:
   required_columns: ["title", "summary", "content", "links", "url"]
 regex_patterns:
   url: "^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\.-]*)*/?$"
 
-# There are no date fields in this dataset.
+# Define the rules for handling dates.
 date_columns: []
 
-# Specify which columns should undergo text cleaning (e.g., trimming, lowercasing).
+# Define the rules for handling text data.
 text_columns:
   - title
   - summary
@@ -22,13 +22,12 @@ text_columns:
   - links
   - url
 
-# Outlier handling is generally not applicable for textual data.
+# Define the rules for handling outliers.
 outlier_handling:
   method: "none"
   threshold: 0.05
 
-# Feature engineering: if the dataset doesn't include date or numeric interactions,
-# leave these empty.
+# Define the rules for feature engineering.
 feature_engineering:
   date_features: []
   interactions: []

@@ -2,6 +2,7 @@ import argparse # for parsing command-line arguments
 from pathlib import Path
 from loguru import logger
 import pandas as pd
+# import ydata_profiling
 from core.cleaner import DataCleaner
 from core.preprocessor import DataPreprocessor
 from config.settings import settings
@@ -61,7 +62,7 @@ def process_directory(input_dir: Path, output_dir: Path, cleaner: DataCleaner, p
 
 def generate_profile_report(output_dir: Path):
     # Generate a data profile report
-    from ydata_profiling import ProfileReport  # Imported here to limit scope
+    from ydata_profiling import ProfileReport
     logger.info("Generating data profile report...")
 
     dfs = []

@@ -1,17 +1,13 @@
-import argparse  # For parsing command-line arguments
-from pathlib import Path  # To manage file paths in a platform-independent way
-from loguru import logger  # For logging messages in a friendly way
-import pandas as pd  # For DataFrame operations
-import ydata_profiling  # To generate data profile reports
-from core.cleaner import DataCleaner  # Custom data cleaning class
-from core.preprocessor import DataPreprocessor  # Custom data preprocessing class
-from config.settings import settings  # Project settings
+import argparse
+from pathlib import Path
+from loguru import logger
+import pandas as pd
+from core.cleaner import DataCleaner
+from core.preprocessor import DataPreprocessor
+from config.settings import settings
 
 def main():
-    """
-    Main entry point of the Enterprise Data Cleaning Framework.
-    Parses CLI arguments, processes input data, and optionally generates a profile report.
-    """
+    # Parse command-line arguments
     parser = argparse.ArgumentParser(
         description="Enterprise Data Cleaning Framework",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
@@ -28,7 +24,7 @@ def main():
 
     input_path = Path(args.input)
     output_dir = Path(args.output)
-    output_dir.mkdir(parents=True, exist_ok=True)  # Make sure the output directory exists
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     # Initialize our core components
     cleaner = DataCleaner(args.config)
@@ -45,9 +41,6 @@ def main():
         generate_profile_report(output_dir)
 
 def process_file(input_path: Path, output_dir: Path, cleaner: DataCleaner, preprocessor: DataPreprocessor):
-    """
-    Process a single file: clean, preprocess, and save the result.
-    """
     try:
         logger.info(f"Processing file: {input_path.name}")
         df = cleaner.clean_data(input_path)
@@ -60,18 +53,14 @@ def process_file(input_path: Path, output_dir: Path, cleaner: DataCleaner, prepr
         raise
 
 def process_directory(input_dir: Path, output_dir: Path, cleaner: DataCleaner, preprocessor: DataPreprocessor):
-    """
-    Process all supported files in a directory.
-    """
+    # Process all files in the directory
     logger.info(f"Scanning directory: {input_dir}")
     for file_path in input_dir.glob("*"):
         if file_path.suffix.lower() in [".csv", ".parquet", ".feather", ".xlsx", ".xls"]:
             process_file(file_path, output_dir, cleaner, preprocessor)
 
 def generate_profile_report(output_dir: Path):
-    """
-    Combine all processed files and generate a comprehensive data profile report.
-    """
+    # Generate a data profile report
     from ydata_profiling import ProfileReport  # Imported here to limit scope
     logger.info("Generating data profile report...")
 
@@ -93,9 +82,7 @@ def generate_profile_report(output_dir: Path):
     logger.success(f"Profile report saved to {report_path}")
 
 def save_data(df: pd.DataFrame, output_path: Path):
-    """
-    Save the DataFrame to a file based on the file extension.
-    """
+    # Save the cleaned data to different file formats.
     ext = output_path.suffix.lower()
     if ext == ".csv":
         df.to_csv(output_path, index=False)

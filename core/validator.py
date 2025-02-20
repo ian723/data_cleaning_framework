@@ -1,19 +1,8 @@
-import re
 import pandas as pd
-from loguru import logger
 
 class DataValidator:
     def __init__(self, config: dict):
-        """
-        Initialize the DataValidator with a configuration dictionary.
-        
-        The configuration should include validation rules such as:
-          - required_columns: List of columns that must exist.
-          - value_ranges: Dictionary mapping columns to their min/max allowed values.
-          - regex_patterns: Dictionary mapping columns to regex patterns for validation.
-        
-        :param config: A dictionary with validation rules under 'validation_rules' key.
-        """
+        # Store the configuration dictionary.
         self.config = config
         # Extract the list of required columns; defaults to empty list if not provided.
         self.required_cols = config['validation_rules'].get('required_columns', [])
@@ -23,21 +12,6 @@ class DataValidator:
         self.regex_patterns = config['validation_rules'].get('regex_patterns', {})
     
     def validate(self, df: pd.DataFrame) -> dict:
-        """
-        Validate the DataFrame against the configured validation rules.
-        
-        It checks:
-          1. Required columns existence.
-          2. Value ranges (min/max) for numeric columns.
-          3. Whether string values match given regex patterns.
-          4. Issues warnings for any remaining missing values.
-        
-        :param df: The DataFrame to validate.
-        :return: A dictionary report with:
-                 - 'is_valid': True if no errors; False otherwise.
-                 - 'errors': A list of error messages.
-                 - 'warnings': A list of warning messages.
-        """
         # Initialize a report dictionary with default values.
         report = {
             'is_valid': True,

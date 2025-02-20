@@ -3,13 +3,6 @@ import numpy as np
 from loguru import logger
 
 def memory_optimize(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Optimize DataFrame memory usage by downcasting numeric columns and converting
-    object columns to category type when appropriate.
-    
-    :param df: Input DataFrame.
-    :return: DataFrame with optimized memory usage.
-    """
     logger.info("Optimizing memory usage")
     
     # Downcast numerical columns to more efficient types.
@@ -42,13 +35,6 @@ def memory_optimize(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def convert_dtypes(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Convert columns in the DataFrame to appropriate data types.
-    This example focuses on converting datetime-like columns using pandas.to_datetime.
-    
-    :param df: Input DataFrame.
-    :return: DataFrame with converted data types.
-    """
     # Select columns that are already of datetime type (if any).
     date_cols = df.select_dtypes(include='datetime').columns
     for col in date_cols:

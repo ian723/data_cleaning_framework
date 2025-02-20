@@ -18,7 +18,7 @@ class Settings:
         
         # Data cleaning configurations
         self.MISSING_THRESHOLD = 0.7
-        self.OUTLIER_METHOD = "isolation_forest"  # Options: zscore, isolation_forest, iqr
+        self.OUTLIER_METHOD = "isolation_forest"  # Options: zscore, isolation_forest
         self.TEXT_CLEANING = True
         self.VALIDATE_DATA = True
         

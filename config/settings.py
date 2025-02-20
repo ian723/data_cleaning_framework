@@ -12,13 +12,13 @@ class Settings:
         # Processing configurations
         self.CHUNK_SIZE = 100_000
         self.MAX_MEMORY_USAGE = "16GB"
-        self.FILE_FORMAT = "csv"  # Options: csv, parquet, feather
+        self.FILE_FORMAT = "csv"
         self.USE_DASK = True
         self.N_WORKERS = 4
         
         # Data cleaning configurations
         self.MISSING_THRESHOLD = 0.7
-        self.OUTLIER_METHOD = "isolation_forest"  # Options: zscore, isolation_forest
+        self.OUTLIER_METHOD = "isolation_forest"
         self.TEXT_CLEANING = True
         self.VALIDATE_DATA = True
         

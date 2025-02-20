@@ -6,29 +6,25 @@ from sklearn.impute import KNNImputer
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import PowerTransformer
 from typing import Union
-from .utils import memory_optimize  # Handy utilities to slim down memory usage
-from config.settings import settings  # Our trusted config settings
+from .utils import memory_optimize
+from config.settings import settings
 
 class DataCleaner:
     def __init__(self, config_path: Union[str, Path] = "config/cleaning_rules.yaml"):
-        """
-        Initialize the DataCleaner.
-        Loads our YAML configuration and sets up the imputer and scaler.
-        """
+        # Initialize the DataCleaner.
+        #Loads YAML configuration and sets up the imputer and scaler.
         self.config = self._load_config(config_path)
         self.imputer = KNNImputer(n_neighbors=5)
         self.scaler = PowerTransformer(method='yeo-johnson')
 
     def _load_config(self, config_path: Union[str, Path]) -> dict:
-        """Load cleaning rules from a YAML file."""
+        # Load cleaning rules from a YAML file.
         import yaml
         with open(config_path, 'r') as f:
             return yaml.safe_load(f)
 
     def clean_data(self, input_path: Union[str, Path]) -> pd.DataFrame:
-        """
-        Main routine: reads, cleans, engineers features, validates, and optimizes data.
-        """
+        # Main data cleaning method.
         logger.info(f"Cleaning data from {input_path}")
         df = self._read_data(input_path)
         df = self._handle_missing_values(df)
@@ -41,7 +37,7 @@ class DataCleaner:
         return df
 
     def _read_data(self, input_path: Union[str, Path]) -> pd.DataFrame:
-        """Read data from file based on its extension."""
+        # Read data from different file formats.
         ext = Path(input_path).suffix.lower()
         readers = {
             '.csv': pd.read_csv,
@@ -55,9 +51,7 @@ class DataCleaner:
         raise ValueError(f"Unsupported file format: {ext}")
 
     def _handle_missing_values(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Drop columns with too many missing values and fill in gaps based on config.
-        """
+        # Handle missing values using different strategies.
         missing = df.isnull().mean()
         to_drop = missing[missing > settings.MISSING_THRESHOLD].index
         if len(to_drop):
@@ -79,9 +73,7 @@ class DataCleaner:
         return df
 
     def _clean_text_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Clean text columns by trimming, lowercasing, and stripping unwanted punctuation.
-        """
+        # Clean text data.
         if not settings.TEXT_CLEANING:
             return df
         text_cols = self.config.get('text_columns', [])
@@ -95,23 +87,18 @@ class DataCleaner:
         return df
 
     def _handle_outliers(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Handle outliers in numeric columns using winsorization or isolation forest.
-        """
+        # Handle outliers.
         num_cols = df.select_dtypes(include=np.number).columns
         method = self.config.get('outlier_handling', {}).get('method', 'winsorize')
         for col in num_cols:
             if method == 'winsorize':
-                # Cap values at 45 * 1.5 (feel free to adjust this hard-coded limit)
                 df[col] = df[col].clip(upper=45 * 1.5)
             elif method == 'isolation_forest':
                 df = self._iso_forest_outlier_handling(df, col)
         return df
 
     def _iso_forest_outlier_handling(self, df: pd.DataFrame, col: str) -> pd.DataFrame:
-        """
-        Detect outliers with Isolation Forest, mark them as NaN, then impute with median.
-        """
+        # Handle outliers using Isolation Forest.
         clf = IsolationForest(contamination=0.05, random_state=42)
         outliers = clf.fit_predict(df[[col]])
         df[col] = np.where(outliers == -1, np.nan, df[col])
@@ -119,15 +106,13 @@ class DataCleaner:
         return df
 
     def _engineer_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Engineer additional features such as date parts and interactions.
-        """
+        # Engineer additional features such as date parts and interactions.
         df = self._extract_date_features(df)
         df = self._create_interactions(df)
         return df
 
     def _extract_date_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Extract year, month, and day-of-week from date columns."""
+        # Extract year, month, and day-of-week from date columns.
         date_cols = self.config.get('date_columns', [])
         for col in date_cols:
             if col in df.columns:
@@ -142,7 +127,7 @@ class DataCleaner:
         return df
 
     def _create_interactions(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Create new interaction features as defined in the configuration."""
+        # Create interactions between columns.
         interactions = self.config.get('feature_engineering', {}).get('interactions', [])
         for interaction in interactions:
             cols = interaction.get('columns', [])
@@ -152,9 +137,7 @@ class DataCleaner:
         return df
 
     def _validate_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Validate the cleaned data. If issues are found, either raise an error or log warnings.
-        """
+        # Validate the cleaned data.
         from .validator import DataValidator
         if not settings.VALIDATE_DATA:
             return df
@@ -169,7 +152,7 @@ class DataCleaner:
         return df
 
 if __name__ == '__main__':
-    sample_input = "data/sample_data.csv"  # Adjust to your actual file
+    sample_input = "data/sample_data.csv"
     cleaner = DataCleaner()
     try:
         cleaned_df = cleaner.clean_data(sample_input)

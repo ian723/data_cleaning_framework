@@ -3,12 +3,11 @@ missing_values:
   summary: "drop_row"
   content: "drop_row"
   links: "drop_row"
-  url: "drop_row"
+  url: "drop_row
 
-# Validation rules to ensure the dataset has all necessary columns.
+# Define the rules for validating the data.
 validation_rules:
   required_columns: ["title", "summary", "content", "links", "url"]
-  # Optionally, you can validate URL formats using a regex.
 regex_patterns:
   url: "^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\.-]*)*/?$"
 
